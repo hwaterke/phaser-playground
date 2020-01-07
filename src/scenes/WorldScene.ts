@@ -45,12 +45,12 @@ export class WorldScene extends Phaser.Scene {
     this.tilemap.createStaticLayer(0, tileset, 0, 0)
 
     // Create player
-    this.player = new Character(this, 'mouse', this.tilemap)
+    this.player = new Character(this, 'mouse', this.tilemap, 2)
     this.player.teleportToTile(0, 0)
 
     // Create the cheese
     this.cheese = new Character(this, 'cheese', this.tilemap)
-    this.cheese.teleportToTile(9, 9)
+    this.cheese.teleportToTile(9, 2)
 
     // Create enemy
     this.enemies = []
