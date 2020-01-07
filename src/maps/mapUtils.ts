@@ -1,3 +1,6 @@
+/**
+ * Given the position of a tile, returns the bottom center in world coordinates
+ */
 export const getBottomCenterOfTileToWorld = (
   map: Phaser.Tilemaps.Tilemap,
   x: number,

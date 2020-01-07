@@ -4,6 +4,8 @@ import {Character} from '../character'
 import {generateLevel} from '../maps/level'
 
 export class WorldScene extends Phaser.Scene {
+  private player: Character | undefined
+
   constructor() {
     super('WorldScene')
   }
@@ -26,8 +28,8 @@ export class WorldScene extends Phaser.Scene {
     const layer = tilemap.createStaticLayer(0, tileset, 0, 0)
 
     // Create player
-    const player = new Character(this, 'mouse', tilemap)
-    player.teleportToTile(0, 0)
+    this.player = new Character(this, 'mouse', tilemap)
+    this.player.teleportToTile(0, 0)
 
     // Create enemy
     const enemy = new Character(this, 'cat', tilemap)
@@ -40,6 +42,34 @@ export class WorldScene extends Phaser.Scene {
       tilemap.widthInPixels,
       tilemap.heightInPixels
     )
-    this.cameras.main.startFollow(player.sprite, false, 0.3, 0.3)
+    this.cameras.main.startFollow(this.player.sprite, false, 0.3, 0.3)
+
+    // Configure input
+    this.input.on(
+      'pointerdown',
+      (pointer: {x: number; y: number}) => {
+        const {x, y} = pointer
+
+        const {x: worldX, y: worldY} = this.cameras.main.getWorldPoint(x, y)
+
+        const clickedTileX = tilemap.worldToTileX(worldX)
+        const clickedTileY = tilemap.worldToTileY(worldY)
+
+        if (
+          clickedTileX >= 0 &&
+          clickedTileX < tilemap.width &&
+          clickedTileY >= 0 &&
+          clickedTileY < tilemap.height
+        ) {
+          // User clicked on tile [clickedTileX, clickedTileY]
+          this.player?.setTarget(clickedTileX, clickedTileY)
+        }
+      },
+      this
+    )
+  }
+
+  update(time: number, delta: number): void {
+    this.player?.update(time, delta)
   }
 }
