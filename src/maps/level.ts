@@ -1,5 +1,7 @@
+export const PATH_INDEX = 26
+
 const X = 65
-const O = 26
+const O = PATH_INDEX
 
 export const generateLevel = () => [
   [O, O, X, X, X, X, X, X, X, X, X],

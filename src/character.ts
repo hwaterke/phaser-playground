@@ -21,6 +21,10 @@ export class Character {
     this.sprite.setY(wy)
   }
 
+  hasTarget() {
+    return !!this.target
+  }
+
   setTarget(x: number, y: number) {
     this.target = [x, y]
   }
@@ -66,6 +70,14 @@ export class Character {
     this.sprite.setX(dx)
     this.sprite.setY(dy)
     return true
+  }
+
+  getTileX() {
+    return this.tilemap.worldToTileX(this.sprite.x)
+  }
+
+  getTileY() {
+    return this.tilemap.worldToTileY(this.sprite.y)
   }
 
   update(time: number, delta: number) {

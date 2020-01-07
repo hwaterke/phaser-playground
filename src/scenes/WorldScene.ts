@@ -2,6 +2,11 @@ import Phaser from 'phaser'
 import {TILE_IMAGE, TILE_SIZE} from '../constants'
 import {Character} from '../character'
 import {generateLevel} from '../maps/level'
+import {
+  canWalkOn,
+  getNeighbourTileTowards,
+  tileWithinMap,
+} from '../maps/mapUtils'
 
 export class WorldScene extends Phaser.Scene {
   private player: Character | undefined
@@ -56,20 +61,31 @@ export class WorldScene extends Phaser.Scene {
       'pointerdown',
       (pointer: {x: number; y: number}) => {
         const {x, y} = pointer
-
         const {x: worldX, y: worldY} = this.cameras.main.getWorldPoint(x, y)
-
         const clickedTileX = tilemap.worldToTileX(worldX)
         const clickedTileY = tilemap.worldToTileY(worldY)
 
-        if (
-          clickedTileX >= 0 &&
-          clickedTileX < tilemap.width &&
-          clickedTileY >= 0 &&
-          clickedTileY < tilemap.height
-        ) {
+        // Is the player already moving ?
+        if (this.player?.hasTarget()) {
+          return
+        }
+
+        if (tileWithinMap(tilemap, clickedTileX, clickedTileY)) {
           // User clicked on tile [clickedTileX, clickedTileY]
-          this.player?.setTarget(clickedTileX, clickedTileY)
+
+          // What is the next cell in the direction we clicked?
+          const nt = getNeighbourTileTowards(
+            tilemap,
+            this.player!.getTileX(),
+            this.player!.getTileY(),
+            clickedTileX,
+            clickedTileY
+          )
+
+          // Can we go there?
+          if (canWalkOn(tilemap, nt[0], nt[1])) {
+            this.player?.setTarget(nt[0], nt[1])
+          }
         }
       },
       this
