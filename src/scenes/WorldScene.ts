@@ -13,6 +13,7 @@ import {sampleFromArray} from '../utils'
 export class WorldScene extends Phaser.Scene {
   private player: Character | undefined
   private enemies: Character[] = []
+  private cheese: Character | undefined
   private tilemap: Phaser.Tilemaps.Tilemap | undefined
 
   constructor() {
@@ -41,13 +42,18 @@ export class WorldScene extends Phaser.Scene {
       1,
       2
     )
-    const layer = this.tilemap.createStaticLayer(0, tileset, 0, 0)
+    this.tilemap.createStaticLayer(0, tileset, 0, 0)
 
     // Create player
     this.player = new Character(this, 'mouse', this.tilemap)
     this.player.teleportToTile(0, 0)
 
+    // Create the cheese
+    this.cheese = new Character(this, 'cheese', this.tilemap)
+    this.cheese.teleportToTile(9, 9)
+
     // Create enemy
+    this.enemies = []
     const enemy = new Character(this, 'cat', this.tilemap)
     enemy.teleportToTile(5, 4)
     this.enemies.push(enemy)
@@ -112,5 +118,20 @@ export class WorldScene extends Phaser.Scene {
       }
       enemy.update(time, delta)
     })
+
+    // Does the player collide with any enemy?
+    const collidesWithEnemy = this.enemies.some(enemy =>
+      enemy.collidesWith(this.player!)
+    )
+    if (collidesWithEnemy) {
+      // Game over
+      console.log('Game over')
+      this.scene.restart()
+    }
+
+    if (this.player!.collidesWith(this.cheese!)) {
+      console.log('Congrats')
+      this.scene.restart()
+    }
   }
 }

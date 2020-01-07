@@ -80,6 +80,13 @@ export class Character {
     return this.tilemap.worldToTileY(this.sprite.y)
   }
 
+  collidesWith(otherCharacter: Character) {
+    return (
+      this.getTileX() === otherCharacter.getTileX() &&
+      this.getTileY() === otherCharacter.getTileY()
+    )
+  }
+
   update(time: number, delta: number) {
     if (this.target) {
       if (this.moveTowardsTile(this.target[0], this.target[1], delta)) {
