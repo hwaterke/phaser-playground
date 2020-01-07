@@ -17,18 +17,29 @@ export class WorldScene extends Phaser.Scene {
   }
 
   create() {
-    const map = this.make.tilemap({
+    const tilemap = this.make.tilemap({
       data: generateLevel(),
       tileWidth: TILE_SIZE,
       tileHeight: TILE_SIZE,
     })
-    const tileset = map.addTilesetImage('tileset-image')
-    const layer = map.createStaticLayer(0, tileset, 0, 0)
+    const tileset = tilemap.addTilesetImage('tileset-image')
+    const layer = tilemap.createStaticLayer(0, tileset, 0, 0)
 
-    const player = new Character(this, 'mouse', map)
+    // Create player
+    const player = new Character(this, 'mouse', tilemap)
     player.teleportToTile(0, 0)
 
-    const enemy = new Character(this, 'cat', map)
+    // Create enemy
+    const enemy = new Character(this, 'cat', tilemap)
     enemy.teleportToTile(5, 4)
+
+    // Camera setup
+    this.cameras.main.setBounds(
+      0,
+      0,
+      tilemap.widthInPixels,
+      tilemap.heightInPixels
+    )
+    this.cameras.main.startFollow(player.sprite, false, 0.3, 0.3)
   }
 }
