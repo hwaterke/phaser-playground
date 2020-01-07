@@ -96,7 +96,9 @@ export const getRandomTile = (tilemap: Phaser.Tilemaps.Tilemap) => {
   return [x, y]
 }
 
-export const getRandomWalkableTile = (tilemap: Phaser.Tilemaps.Tilemap) => {
+export const getRandomWalkableTile = (
+  tilemap: Phaser.Tilemaps.Tilemap
+): [number, number] | null => {
   const xs = shuffleArray(range(0, tilemap.width))
   const ys = shuffleArray(range(0, tilemap.height))
   for (const x of xs) {

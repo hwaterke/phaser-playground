@@ -45,7 +45,7 @@ export class WorldScene extends Phaser.Scene {
     this.tilemap.createStaticLayer(0, tileset, 0, 0)
 
     // Create player
-    this.player = new Character(this, 'mouse', this.tilemap, 2)
+    this.player = new Character(this, 'mouse', this.tilemap)
     this.player.teleportToTile(0, 0)
 
     // Create the cheese
@@ -75,11 +75,6 @@ export class WorldScene extends Phaser.Scene {
         const {x: worldX, y: worldY} = this.cameras.main.getWorldPoint(x, y)
         const clickedTileX = this.tilemap!.worldToTileX(worldX)
         const clickedTileY = this.tilemap!.worldToTileY(worldY)
-
-        // Is the player already moving ?
-        if (this.player?.hasTarget()) {
-          return
-        }
 
         if (tileWithinMap(this.tilemap!, clickedTileX, clickedTileY)) {
           // User clicked on tile [clickedTileX, clickedTileY]

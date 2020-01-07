@@ -1,7 +1,14 @@
+import '../index.css'
 import React, {useEffect} from 'react'
 import Phaser from 'phaser'
 import {WorldScene} from '../scenes/WorldScene'
 import {TILE_SIZE} from '../constants'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+`
 
 const PHASER_GAME_DIV_ID = 'phaser'
 
@@ -16,7 +23,7 @@ export const PhaserContainer: React.FC = () => {
     new Phaser.Game(config)
   }, [])
 
-  return <div id={PHASER_GAME_DIV_ID} />
+  return <Container id={PHASER_GAME_DIV_ID} />
 }
 
 export const App = React.memo(PhaserContainer)
