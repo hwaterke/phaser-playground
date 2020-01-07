@@ -1,4 +1,6 @@
 import {PATH_INDEX} from './level'
+import {rand, shuffleArray} from '../utils'
+import {range} from 'ramda'
 
 /**
  * Given the position of a tile, returns the bottom center in world coordinates
@@ -86,4 +88,23 @@ export const getWalkableNeighbourTiles = (
   return getNeighbourTiles(tilemap, x, y).filter(([tx, ty]) =>
     canWalkOn(tilemap, tx, ty)
   )
+}
+
+export const getRandomTile = (tilemap: Phaser.Tilemaps.Tilemap) => {
+  const x = rand(0, tilemap.width)
+  const y = rand(0, tilemap.height)
+  return [x, y]
+}
+
+export const getRandomWalkableTile = (tilemap: Phaser.Tilemaps.Tilemap) => {
+  const xs = shuffleArray(range(0, tilemap.width))
+  const ys = shuffleArray(range(0, tilemap.height))
+  for (const x of xs) {
+    for (const y of ys) {
+      if (canWalkOn(tilemap, x, y)) {
+        return [x, y]
+      }
+    }
+  }
+  return null
 }
