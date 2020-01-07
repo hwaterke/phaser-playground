@@ -24,7 +24,14 @@ export class WorldScene extends Phaser.Scene {
       tileWidth: TILE_SIZE,
       tileHeight: TILE_SIZE,
     })
-    const tileset = tilemap.addTilesetImage('tileset-image')
+    const tileset = tilemap.addTilesetImage(
+      'tileset-image',
+      'tileset-image',
+      64,
+      64,
+      1,
+      2
+    )
     const layer = tilemap.createStaticLayer(0, tileset, 0, 0)
 
     // Create player
