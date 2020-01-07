@@ -52,3 +52,38 @@ export const getNeighbourTileTowards = (
   }
   return [x, y + dy / (Math.abs(dy) || 1)]
 }
+
+/**
+ * Given a tile position, return an array of neighbour tile positions
+ */
+export const getNeighbourTiles = (
+  tilemap: Phaser.Tilemaps.Tilemap,
+  x: number,
+  y: number
+) => {
+  const neighbours: [number, number][] = []
+
+  const deltas = [-1, 0, 1]
+  for (const dx of deltas) {
+    for (const dy of deltas) {
+      if ((dx !== 0 || dy !== 0) && (dx === 0 || dy === 0)) {
+        neighbours.push([x + dx, y + dy])
+      }
+    }
+  }
+
+  return neighbours
+}
+
+/**
+ * Given a tile position, return an array of neighbour tile positions
+ */
+export const getWalkableNeighbourTiles = (
+  tilemap: Phaser.Tilemaps.Tilemap,
+  x: number,
+  y: number
+) => {
+  return getNeighbourTiles(tilemap, x, y).filter(([tx, ty]) =>
+    canWalkOn(tilemap, tx, ty)
+  )
+}
