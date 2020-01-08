@@ -3,6 +3,44 @@
 Welcome to this playground.
 Let's learn phaser by building a game together.
 
+## Cheat sheet
+
+Sprites
+
+```javascript
+// preload()
+this.load.image('mouse', '/assets/mouse.png')
+// create()
+this.sprite = this.add.sprite(0, 0, 'mouse')
+this.sprite.setOrigin(0.5, 1)
+// update()
+this.sprite.setX(x)
+this.sprite.setY(y)
+```
+
+Tileset
+
+```javascript
+//preload()
+this.load.image('tileset-image', `/assets/tilesets/rpg.png`)
+//create()
+this.tilemap = this.make.tilemap({
+  data: [
+    [0, 0],
+    [0, 1],
+  ],
+  tileWidth: 64,
+  tileHeight: 64,
+})
+const tileset = this.tilemap.addTilesetImage(
+  'tileset-image',
+  'tileset-image',
+  64,
+  64
+)
+this.tilemap.createStaticLayer(0, tileset, 0, 0)
+```
+
 ## Helpers
 
 While working on the game, do not forget to check the few utils already available for you.
