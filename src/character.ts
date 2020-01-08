@@ -94,4 +94,12 @@ export class Character {
       }
     }
   }
+
+  /**
+   * Destroy the sprite.
+   * Useful when removing it from the scene
+   */
+  destroy() {
+    this.sprite.destroy()
+  }
 }
